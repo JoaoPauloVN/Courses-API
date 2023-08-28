@@ -21,7 +21,7 @@ Route::get('/instructors/{instructor}', [UserController::class, 'instructor'])->
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
 
-// Route::group(['middleware' => 'auth:sanctum'], function() {
+Route::group(['middleware' => 'auth:sanctum'], function() {
 
     Route::apiResource('/courses', CourseController::class)->except(['index', 'show']);
     
@@ -54,4 +54,4 @@ Route::get('/courses/{course}', [CourseController::class, 'show'])->name('course
     Route::post('/courses/{course}/unsubscribe/{user}', [CourseController::class, 'unsubscribe'])->name('courses.unsubscribe');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
-// });
+});
