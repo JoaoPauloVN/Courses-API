@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use BadMethodCallException;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -23,8 +26,25 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        // $this->renderable(function (NotFoundHttpException $e, $request) {
+        //     if($request->wantsJson())
+        //     {
+        //         return response()->json(['message' => __('generic.not_found')], 404);
+        //     }
+        // });
+
+        // $this->renderable(function (QueryException $e, $request) {
+        //     if($request->wantsJson())
+        //     {
+        //         return response()->json(['message' => $e->getMessage()], 503);
+        //     }
+        // });
+
+        // $this->renderable(function (BadMethodCallException $e, $request) {
+        //     if($request->wantsJson())
+        //     {
+        //         return response()->json(['message' => __('generic.not_found')], 404);
+        //     }
+        // });
     }
 }

@@ -4,9 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -21,6 +23,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'surname',
+        'contact',
+        'profile_image',
+        'language',
+        'biography',
+        'site',
+        'facebook',
+        'linkedin',
+        'youtube',
+        'instagram',
     ];
 
     /**
@@ -42,4 +54,52 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Generate a slug before create and update
+     * 
+     * @param \App\Models\User $user
+     * @return void
+     */
+    protected static function boot() {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->slug = Str::slug("$user->name $user->surname");
+        });
+
+        static::updating(function ($user) {
+            $user->slug = Str::slug("$user->name $user->surname");
+        });
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->name} {$this->surname}";
+    }
+
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class)->withPivot('status')->where('status', 1);
+    }
+
+    public function lessonsCompleted(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->wherePivot('status', 'complete');
+    }
+
+    public function assessments(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class, 'assessments');
+    }
 }
