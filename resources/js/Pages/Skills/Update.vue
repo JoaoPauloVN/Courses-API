@@ -89,10 +89,12 @@ const loading: Ref<boolean> = ref(store.loading);
 const response: Ref<string> = ref('');
 const status: Ref<number> = ref(0);
 const routes: Array<Routes> = store.routes;
+    // @ts-ignore
 const currentUrl: string = page.props.ziggy.location;
 
 let currentRoute: Ref<Route>;
-for(let el in routes) {      
+for(let el in routes) {    
+    // @ts-ignore  
     currentRoute = ref(routes[el].routes.find(i => i.url == currentUrl));
 
     if(currentRoute.value)

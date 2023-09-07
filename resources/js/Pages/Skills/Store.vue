@@ -1,3 +1,4 @@
+
 <template>
     <div class="grid grid-cols-9 py-7">
         <SideBar />
@@ -34,12 +35,12 @@
             <InputParam 
                 v-for="el, index in currentRoute.bodyParams"
                 :index="index"
-                :total="currentRoute.bodyParams.length"
+                :total="currentRoute?.bodyParams?.length"
                 :data="el"
                 :type="el.types"
                 :input="el.input"
                 :options="el.options"
-                @update="store.updateValue" />
+                @update="store?.updateValue" />
 
             <Line class="mt-6" />
             <Pagination />
@@ -54,7 +55,7 @@
                     :id="index"
                     :number="index"
                     :tab="el.tab"
-                    :code='el.code' />
+                    :code='el?.code' />
             </CodeBox>
             <Button 
                 :loading="loading"
@@ -69,6 +70,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-ignore
 import InputParam from '../../Components/InputParam.vue';
 import Description from '../../Components/Description.vue';
 import Token from '../../Components/Token.vue';
@@ -90,10 +92,12 @@ const loading: Ref<boolean> = ref(store.loading);
 const response: Ref<string> = ref('');
 const status: Ref<number> = ref(0);
 const routes: Array<Routes> = store.routes;
+    // @ts-ignore
 const currentUrl: string = page.props.ziggy.location;
 
 let currentRoute: Ref<Route>;
 for(let el in routes) {      
+    // @ts-ignore
     currentRoute = ref(routes[el].routes.find(i => i.url == currentUrl));
 
     if(currentRoute.value)
