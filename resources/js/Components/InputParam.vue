@@ -35,7 +35,7 @@ const types = props.data.types.toString().replaceAll(',', ' ').replace('required
 const test = [
     'email',
     'password'
-    
+
 ];
 
 const classes = computed(function() {
