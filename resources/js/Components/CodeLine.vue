@@ -5,12 +5,12 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 
-const props = defineProps<{
-    number: number;
-    code: string;
-    tab?: number;
-}>();
+const props = defineProps({
+    number: Number,
+    code: String,
+    tab: Number,
+})
 
 </script>

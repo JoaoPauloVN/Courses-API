@@ -8,7 +8,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup  >
 import { useRoutesStore } from '@/Stores/RoutesStore';
 import NavLink from '../Components/NavLink.vue';
 import NavTitle from '../Components/NavTitle.vue';

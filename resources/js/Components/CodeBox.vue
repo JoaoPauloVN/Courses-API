@@ -15,10 +15,10 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup  >
 import BoxTopTitle from "./BoxTopTitle.vue";
 
-defineProps<{
-    lines: Number;
-}>();
+defineProps([
+    'lines'
+])
 </script>

@@ -8,7 +8,6 @@
     <Line class="mt-7" />
 </template>
 
-<script setup lang="ts">
+<script setup>
 import Line from "./Line.vue";
-
 </script>

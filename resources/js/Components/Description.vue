@@ -8,16 +8,16 @@
     <Line class="mt-6" />
 </template>
 
-<script setup lang="ts">
+<script setup  >
 import { computed } from "vue";
 import Line from "./Line.vue";
 
-const props = defineProps<{
-    title: string;
-    method?: string;
-    url?: string;
-    description: string;
-}>();
+const props = defineProps({
+    title: String,
+    method: String,
+    url: String,
+    description: String
+})
 
 const methodBase = "text-[0.65rem] px-3 rounded-full self-center text-neutral-300 py-[0.2rem] align-bottom";
 

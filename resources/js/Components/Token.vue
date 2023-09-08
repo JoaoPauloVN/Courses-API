@@ -8,7 +8,7 @@
     <Line class="my-7" />
 </template>
 
-<script setup lang="ts">
+<script setup  >
 import NavTitle from "./NavTitle.vue";
 import Line from "./Line.vue";
 import { useRoutesStore } from "@/Stores/RoutesStore";

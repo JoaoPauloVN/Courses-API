@@ -7,12 +7,11 @@ export const useRoutesStore = defineStore('routes', () => {
     const loading = ref(false);
     const api_token = ref("");
 
-    function formatRoute(url: string, name: string, method: string, api?: string, pathParams?: Array<Object>|null, query?: Array<Object>|null, body?: Array<Object>) 
-    {
+    function formatRoute(url, name, method, api, pathParams, query, body) {
         let data = page.props.ziggy
-        
+
         url = data.url + '/' + data.routes[url].uri;
-        let api_url = data.url + '/' + data.routes[api].uri;     
+        let api_url = data.url + '/' + data.routes[api].uri;
 
         return {
             url: url,
@@ -516,17 +515,16 @@ export const useRoutesStore = defineStore('routes', () => {
             ]
         },
     ];
-    
-    function formatBodyParams(data)
-    {
-        let output = {};      
 
-        for(let index in data) {
+    function formatBodyParams(data) {
+        let output = {};
+
+        for (let index in data) {
             let el = data[index]
-            
+
             output[el.name] = el.value
         }
-        
+
         return output;
     }
 
@@ -535,49 +533,48 @@ export const useRoutesStore = defineStore('routes', () => {
         errors: []
     });
 
-    const apiRoute = function(currentRoute: Route) {
+    const apiRoute = function (currentRoute) {
         let url = currentRoute.api_url;
         let pathParams = currentRoute.pathParams
         let queryParams = currentRoute.queryParams
-        let query = "";   
+        let query = "";
         validated.value = true;
 
-        for(let index in pathParams) {
-            if(pathParams[index].types.includes('required') && pathParams[index].value == "") {
+        for (let index in pathParams) {
+            if (pathParams[index].types.includes('required') && pathParams[index].value == "") {
                 validated.value = false;
 
                 errors.value.errors = {
                     [pathParams[index].name]: ["The " + pathParams[index].name + " field is required"]
                 }
             }
-            
-            url = url.replace('{' + pathParams[index].field +'}', pathParams[index].value)
+
+            url = url.replace('{' + pathParams[index].field + '}', pathParams[index].value)
         }
-    
-        for(let index in queryParams){
-            if(!queryParams[index].value)
+
+        for (let index in queryParams) {
+            if (!queryParams[index].value)
                 continue
-            if(index == 0)
+            if (index == 0)
                 query = "?"
             else
-                query += "&" 
-    
+                query += "&"
+
             query += queryParams[index].name + "=" + queryParams[index].value
         }
-        
+
         return url + query;
     };
 
-    async function request(currentRoute: Route) 
-    {
+    async function request(currentRoute) {
         let api = apiRoute(currentRoute);
-        
-        if(!validated.value) {
+
+        if (!validated.value) {
             return {
                 response: JSON.stringify(errors.value, null, 2)
                     .replace(/"([^"]+)":/g, '<span class="text-sky-300">"$1":</span>'),
                 status: 422
-            } 
+            }
         }
 
         loading.value = true;
@@ -587,10 +584,10 @@ export const useRoutesStore = defineStore('routes', () => {
             method: currentRoute.method,
             data: body,
             url: api,
-        };        
-        
+        };
+
         axios.defaults.headers.common['Authorization'] = "Bearer " + api_token.value;
-    
+
         await axios.get('/sanctum/csrf-cookie');
 
         let response = "";
@@ -602,36 +599,36 @@ export const useRoutesStore = defineStore('routes', () => {
                 response = res.data;
                 status = res.status;
 
-                api_token.value = response.data.access_token                
+                api_token.value = response.data.access_token
             })
             .catch((error) => {
                 loading.value = false;
                 response = error.response.data;
                 status = error.response.status;
             });
-        
+
         return {
             response: JSON.stringify(response, null, 2)
-                            .replace(/"([^"]+)":/g, '<span class="text-sky-300">"$1":</span>'),
+                .replace(/"([^"]+)":/g, '<span class="text-sky-300">"$1":</span>'),
             status: status
         };
     }
 
-    function bodyCodeLines(params: Params) {
-        let show: boolean = false
-        let output: Array<Object> = []
-    
-        output.push( {
-                code: '<span class="text-fuchsia-400">let</span> body <span class="text-sky-200">=</span> <span class="text-fuchsia-400">{</span>',
-                tab: 0
-            });
-    
-        for(let el in params) {
-    
-            const param = params[el as keyof Params]
-    
-            if(!params[el as keyof Params].value) continue;
-    
+    function bodyCodeLines(params) {
+        let show = false
+        let output = []
+
+        output.push({
+            code: '<span class="text-fuchsia-400">let</span> body <span class="text-sky-200">=</span> <span class="text-fuchsia-400">{</span>',
+            tab: 0
+        });
+
+        for (let el in params) {
+
+            const param = params[el]
+
+            if (!params[el].value) continue;
+
             show = true;
 
             const stringTypes = [
@@ -644,55 +641,54 @@ export const useRoutesStore = defineStore('routes', () => {
                 'int'
             ];
 
-            let value: string = "";
+            let value = "";
 
-            if(stringTypes.some(i => param.types.includes(i)))
+            if (stringTypes.some(i => param.types.includes(i)))
                 value = "<span class='text-lime-300'> " + "'" + param.value + "'";
-            if(numberTypes.some(i => param.types.includes(i)))
+            if (numberTypes.some(i => param.types.includes(i)))
                 value = "<span class='text-orange-400'> " + param.value;
-            if(param.types.includes('password')) 
+            if (param.types.includes('password'))
                 value = "<span class='text-lime-300'> " + "'" + param.value.replace(/[a-zA-Z0-9]/g, "*") + "'";
-    
+
             output.push({
                 code: param.name + "<span class='text-sky-300'>:</span> " + value + "<span class='text-sky-300'>,</span>",
                 tab: 1
             });
         }
-    
+
         output.push({
-                code: '<span class="text-amber-300">}</span><span class="text-sky-200">;</span>',
-                tab: 0
-            },
+            code: '<span class="text-amber-300">}</span><span class="text-sky-200">;</span>',
+            tab: 0
+        },
             {
                 code: '<span style="opacity: 0">space</span>',
                 tab: 0
             });
-    
-        if(show)
+
+        if (show)
             return output;
-    
+
         return "";
     }
 
-    function updateValue(param: Params, currentRoute: Route)
-    {
-        let el: Object = {};
+    function updateValue(param, currentRoute) {
+        let el = {};
 
-        let query: Params = currentRoute.queryParams;
-        let path: Params = currentRoute.pathParams;
-        let body: Params = currentRoute.bodyParams;
+        let query = currentRoute.queryParams;
+        let path = currentRoute.pathParams;
+        let body = currentRoute.bodyParams;
 
-        if(query && query.find((el: Params) => el.name == param.name))
-            el = query.find((el: Params) => el.name == param.name);
+        if (query && query.find((el) => el.name == param.name))
+            el = query.find((el) => el.name == param.name);
 
-        else if(path && path.find((el: Params) => el.name == param.name))
-            el = path.find((el: Params) => el.name == param.name);
+        else if (path && path.find((el) => el.name == param.name))
+            el = path.find((el) => el.name == param.name);
 
-        else if(body && body.find((el: Params) => el.name == param.name))
-            el = body.find((el: Params) => el.name == param.name);
+        else if (body && body.find((el) => el.name == param.name))
+            el = body.find((el) => el.name == param.name);
 
         el = param
     }
 
     return { routes, api_token, apiRoute, loading, request, bodyCodeLines, updateValue }
-  })
+})

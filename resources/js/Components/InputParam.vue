@@ -15,18 +15,18 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup  >
 import { ref } from 'vue';
 import { computed } from 'vue';
 
-const props = defineProps<{
-    data: Object;
-    index: number;
-    total: number;
-    type: Array<String>;
-    input?: string;
-    options?: Array<String>;
-}>();
+const props = defineProps({
+    data: Object,
+    index: Number,
+    total: Number,
+    type: Array,
+    input: String,
+    options: Array
+})
 
 const base = "w-full py-3 px-2 bg-neutral-800 border border-neutral-700 flex justify-between items-center border-collapse";
 
@@ -35,6 +35,7 @@ const types = props.data.types.toString().replaceAll(',', ' ').replace('required
 const test = [
     'email',
     'password'
+    
 ];
 
 const classes = computed(function() {

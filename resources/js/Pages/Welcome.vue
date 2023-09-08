@@ -17,7 +17,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import SideBar from "../Components/SideBar.vue";
 import Description from "../Components/Description.vue";
 import Pagination from "../Components/Pagination.vue";

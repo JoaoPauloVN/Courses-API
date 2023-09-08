@@ -4,16 +4,16 @@
     </Link>
 </template>
 
-<script setup lang="ts">
+<script setup  >
 import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
-const props = defineProps<{
-    href: string;
-    active?: boolean;
-    name: string;
-    method: string;
-}>();
+const props = defineProps({
+    href: String,
+    active: Boolean,
+    name: String,
+    method: String
+});
 
 const classBase = "text-sm text-neutral-400 flex justify-between px-4 py-[0.3rem] my-1 align-middle hover: rounded-lg text-center";
 

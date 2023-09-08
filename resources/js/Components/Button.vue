@@ -4,8 +4,8 @@
     </div>
 </template>
 
-<script setup lang="ts">
-defineProps<{
-    loading: boolean;
-}>();
+<script setup  >
+defineProps([
+    'loading'
+])
 </script>

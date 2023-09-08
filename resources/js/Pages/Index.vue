@@ -38,7 +38,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import InputParam from '../Components/InputParam.vue';
 import Description from '../Components/Description.vue';
 import Token from '../Components/Token.vue';
@@ -58,7 +58,7 @@ const page = usePage();
 
 const loading = ref(store.loading);
 const response = ref('');
-const status = ref<Number>();
+const status = ref();
 
 const routes = store.routes;
 
@@ -94,7 +94,7 @@ for(let el in routes) {
 
 const api_url = store.apiRoute(currentRoute.value);
 
-function updateValue(param: Object)
+function updateValue(param)
 {
     let el = null;
 

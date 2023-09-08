@@ -19,12 +19,12 @@
     </div>
 </template>
 
-<script setup lang="ts">
-const props = defineProps<{
-    response: string;
-    loading: boolean;
-    status: number;
-}>();
+<script setup  >
+const props = defineProps({
+    response: String,
+    loading: Boolean,
+    status: Number
+});
 
 function statusClass() {
     let base = "inline-block w-3 h-3 rounded-full mr-1";

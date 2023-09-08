@@ -69,14 +69,13 @@
     </div>
 </template>
 
-<script setup lang="ts">
-// @ts-ignore
+<script setup>
 import InputParam from '../../Components/InputParam.vue';
 import Description from '../../Components/Description.vue';
 import Token from '../../Components/Token.vue';
 import CodeBox from '../../Components/CodeBox.vue';
 import CodeLine from '../../Components/CodeLine.vue';
-import { ref, computed, Ref } from 'vue';
+import { ref, computed} from 'vue';
 import Pagination from '../../Components/Pagination.vue';
 import Response from '../../Components/Response.vue';
 import Button from '../../Components/Button.vue';
@@ -84,20 +83,17 @@ import { useRoutesStore } from '../../Stores/RoutesStore';
 import SideBar from '../../Components/SideBar.vue';
 import { usePage } from '@inertiajs/vue3';
 import Line from '../../Components/Line.vue';
-import { Route, Routes } from '../../types/global';
 
 const store = useRoutesStore();
 const page = usePage();
-const loading: Ref<boolean> = ref(store.loading);
-const response: Ref<string> = ref('');
-const status: Ref<number> = ref(0);
-const routes: Array<Routes> = store.routes;
-    // @ts-ignore
-const currentUrl: string = page.props.ziggy.location;
+const loading = ref(store.loading);
+const response = ref('');
+const status  = ref(0);
+const routes = store.routes;
+const currentUrl = page.props.ziggy.location;
 
-let currentRoute: Ref<Route>;
+let currentRoute ;
 for(let el in routes) {      
-    // @ts-ignore
     currentRoute = ref(routes[el].routes.find(i => i.url == currentUrl));
 
     if(currentRoute.value)
@@ -105,7 +101,7 @@ for(let el in routes) {
 }
 
 const api_url = computed(() => store.apiRoute(currentRoute.value));
-const codeLines: Object = computed(() => {
+const codeLines = computed(() => {
     return [
         ...store.bodyCodeLines(currentRoute.value.bodyParams),
         {
