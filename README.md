@@ -13,8 +13,6 @@ Welcome to the initial version of the Courses API. Here you will find a comprehe
 
 You can access the docs <a href="https://courses-api.joaopauloverzeletti.com/">here</a>.
 
-<p align="center"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Api Image"></p>
-
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
