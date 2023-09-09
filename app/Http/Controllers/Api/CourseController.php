@@ -23,12 +23,6 @@ class CourseController extends Controller
     {
         $courses = Course::get();
 
-        Spatie\DbDumper\Databases\MySql::create()
-            ->setDbName('courses_api')
-            ->setUserName('root')
-            ->setPassword('')
-            ->dumpToFile('dump.sql');
-
         return $this->success(['courses' => SimpleCourseResource::collection($courses->load([
             'instructors',
         ]))]);
